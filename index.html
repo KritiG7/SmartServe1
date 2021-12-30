@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .user{
+            background-color:lightgray;
+            padding:1 rem;
+            margin:auto;
+            font-size: large;
+            font-style:inherit;
+            text-indent: 20px;            
+        }
+    </style>
+</head>
+<body>
+  <h1>Smart Serve</h1>
+  <h2>Task 1</h2>
+    <div id = "app"></div>
+<script>
+   fetch('https://s3.amazonaws.com/open-to-cors/assignment.json')
+    .then(response =>{
+        console.log(response);
+        return response
+    }).then((resp)=>resp.json()).then(data1 =>{
+       // console.log(data1.products);
+      const json_data=data1.products;
+       const arr = [];
+        for(const i in json_data)
+     arr.push([i, json_data [i]]);
+     arr.sort((a, b)=> b[1].popularity-a[1].popularity)
+     console.log(arr);
+        const html = arr
+         .map (user=>{
+             return `
+             <div class='user'>
+
+             <p>Model Name : ${user[1].title}</p>
+             <p>Price : ${user[1].price}</p>
+             <p>Popularity : ${user[1].popularity}</p>
+            </div>
+            `
+             })
+          .join("");
+          document.querySelector('#app').insertAdjacentHTML('afterbegin',html);
+    
+     })
+    .catch(error=>{
+       console.log(error);
+    });
+    </script>
+</body>
+</html>
